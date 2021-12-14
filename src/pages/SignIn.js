@@ -70,9 +70,11 @@ const Wrapper = styled.div`
 
 const Logo = styled.img`
     width: 150px;
+    height: 50px;
 `
 
 const MainTitle = styled.h3`
+    margin-top: 40px;
     color: white;
 `
 
@@ -95,7 +97,7 @@ const UserInput = styled.input`
 
 const BtnLogin = styled.button`
     margin-top: 20px;
-    padding: 10px 140px;
+    padding: 10px 130px;
     border-radius: 10px;
     color: white;
     background-color: #6179FF;
