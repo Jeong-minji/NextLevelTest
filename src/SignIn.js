@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const SignIn = () => {
-    const [userId, setUserId] = useState("");
-    const [userPw, setUserPw] = useState("");
+    const [ userId, setUserId ] = useState("");
+    const [ userPw, setUserPw ] = useState("");
+    const [ isAllowed, setIsAllowed ] = useState(false);
 
     const handleUserId = (e) => {
         setUserId(e.target.value)
@@ -13,15 +15,31 @@ const SignIn = () => {
         setUserPw(e.target.value);
     }
 
+    const setCookie = (name, value, exp) => {
+        var date = new Date();
+        date.setTime(date.getTime() + exp*24*60*60*1000);
+        document.cookie = name + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
+    }
+
     const handleBtnLogin = () => {
         fetch('http://192.168.0.133:1338/v1/test/auth/local', {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
                 identifier: userId,
                 password: userPw
             })
         }).then(res => res.json())
-        .then(res => console.log(res));
+        .then(res => {
+            if(res.statusCode === 400) {
+                alert("잘못된 아이디/비밀번호 입니다.")
+            } else {
+                setCookie("token", "true", 7);
+                setIsAllowed(true);
+            }
+        });
     }
 
     return (
@@ -36,7 +54,7 @@ const SignIn = () => {
                 <InputTitle>Password</InputTitle>
                 <UserInput onChange={handleUserPw} placeholder="비밀번호를 입력해주세요." />
             </InputBox>
-            <BtnLogin onClick={handleBtnLogin}>로그인</BtnLogin>
+            <Link to={isAllowed ? "/" : "#"}><BtnLogin onClick={handleBtnLogin}>로그인</BtnLogin></Link>
         </Wrapper>
     )
 }
