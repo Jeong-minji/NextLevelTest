@@ -73,6 +73,7 @@ const Content = styled.div`
 const ProfileImage = styled.img`
     width: 70px;
     height: 70px;
+    margin-top: 100px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.3);
 `
